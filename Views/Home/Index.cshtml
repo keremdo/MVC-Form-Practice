@@ -1,0 +1,60 @@
+﻿@model ProductViewModel
+  @{
+    ViewData["Title"] = "Home Page";
+  }
+    <div class="card card-body my-3">
+      <form asp-action="Index" method="get">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-11">
+              <select name="category" class="form-select" asp-items="@(new SelectList(Model.Categories,"Id","Name",Model.SelectedCategory))">
+                <option value="0">All</option>
+              </select>
+            </div>
+            <div class="col-md-1">
+              <button class="btn btn-outline-secondary" type="submit">Filter</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <table class="table table-bordered table-striped ">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Product Number</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Image</th>
+            <th scope="col">Is Active</th>
+            <th scope="col">Category</th>
+            <th scope="col">Transactions</th>
+          </tr>
+        </thead>
+        @{
+          int i =1;
+        }
+        @foreach(var p in @Model.Products)
+        {
+            <tr>
+                @{
+                  <th style="width: 100px;">@i</th>
+                  i++;
+                }
+                <th style="width: 100px;" >@p.Name</th>
+                <th style="width: 100px;">@p.Price</th>
+                <th style="width: 100px;">
+                  <img src="~/img/@p.Image" class="img-fluid" alt="">
+                </th>
+                <th style="width: 100px;">@p.IsActive</th>
+                <th style="width: 100px;">@p.CategoryId</th>
+                <th style="width: 100px;">
+                  <a asp-controller="Home" asp-action="EditProduct" asp-route-id="@p.Id" class="btn btn-outline-primary">Edit</a>
+                  <a href="/Home/DeleteProduct/@p.Id"  class="btn btn-outline-danger">Delete</a>
+                </th>
+            </tr>
+        }
+        </tbody>
+      </table>
+      <div class="my-3">
+      <a asp-controller="Home" asp-action="CreateProduct" class="btn btn-outline-secondary">New Product</a>
+      </div>
